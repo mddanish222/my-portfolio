@@ -1,16 +1,73 @@
-# React + Vite
+# 🚀 Mohammed Danish – Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is my personal portfolio website built using React. It showcases my skills, projects, and experience in web and app development.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 📌 Features
 
-## React Compiler
+- Smooth scrolling navigation
+- Skills filtering (Frontend, Backend, Database, Tools)
+- Projects section with details toggle
+- Clean and modern UI
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🛠️ Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- React (useState, components)
+- HTML, CSS, JavaScript
+- Node.js, Flask (Basics)
+- MongoDB, PostgreSQL, MySQL
+- Git & GitHub
+
+---
+
+## 💼 Projects
+
+### 📱 Money Manager App
+Built using Kotlin, Jetpack Compose, Room DB, MVVM architecture.
+
+### 🌐 KR Timber System
+Full-stack inventory system using Node.js, Express, MongoDB.
+
+### 🏗️ Arsh Infrastructure
+Project management system using Flask and PostgreSQL.
+
+### 📰 Prajayoga E-Paper (Ongoing)
+Developing a digital newspaper platform using Flask and MariaDB.
+
+### 🔳 QR Code Generator
+Web app using JavaScript and QRCode.js.
+
+---
+
+## 🎯 Purpose
+
+This project demonstrates my ability to:
+- Build React applications using components and hooks
+- Manage state effectively
+- Work on real-world projects
+- Design clean and user-friendly UI
+
+
+---
+
+## 📂 GitHub Repository
+https://github.com/mddanish222/my-portfolio
+
+---
+
+## 👨‍💻 Author
+
+**Mohammed Danish**  
+- GitHub: https://github.com/mddanish222  
+
+---
+
+## ⭐ Future Improvements
+
+- Add animations
+- Improve UI/UX
+- Add contact form
+- Deploy live project
