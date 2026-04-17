@@ -1,57 +1,41 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function Projects() {
   const [showDetails, setShowDetails] = useState(null);
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const projectList = [
-    {
-      id: 1,
-      title: "Money Manager App",
-      desc: "Kotlin, Jetpack Compose, Room DB, MVVM, Coroutines",
-      status: "Completed",
-    },
-    {
-      id: 2,
-      title: "KR Timber System",
-      desc: "Node.js, Express, MongoDB, Full-stack inventory system",
-      status: "Completed",
-    },
-    {
-      id: 3,
-      title: "Arsh Infrastructure",
-      desc: "Flask, PostgreSQL, Admin dashboard, Authentication",
-      status: "Completed",
-    },
-    {
-      id: 4,
-      title: "Prajayoga E-Paper",
-      desc: "Flask, MariaDB, Admin panel, Content management",
-      status: "Ongoing",
-    },
-    {
-      id: 5,
-      title: "QR Code Generator",
-      desc: "JavaScript, QRCode.js, Geolocation API",
-      status: "Completed",
-    },
-  ];
+  useEffect(() => {
+    fetch("http://localhost:5000/projects")
+      .then((res) => res.json())
+      .then((data) => {
+        const updated = data.map((p) => ({
+          ...p,
+          status: "Completed",
+        }));
+        setProjects(updated);
+        setLoading(false);
+      })
+      .catch(() => {
+        setError("Failed to load projects");
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) return <p style={{ textAlign: "center" }}>Loading projects...</p>;
+  if (error) return <p style={{ textAlign: "center" }}>{error}</p>;
 
   return (
     <div style={container}>
       <h1 style={title}>Projects</h1>
 
       <div style={grid}>
-        {projectList.map((project) => (
+        {projects.map((project) => (
           <div key={project.id} style={card}>
             <h3>{project.title}</h3>
 
-            <span
-              style={{
-                ...status,
-                background:
-                  project.status === "Ongoing" ? "#ff9800" : "#4caf50",
-              }}
-            >
+            <span style={{ ...status, background: "#4caf50" }}>
               {project.status}
             </span>
 
@@ -76,8 +60,7 @@ function Projects() {
   );
 }
 
-/* ---------- STYLES ---------- */
-
+/* styles same */
 const container = {
   maxWidth: "1000px",
   margin: "auto",

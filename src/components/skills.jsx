@@ -1,32 +1,31 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function Skills() {
   const [filter, setFilter] = useState("all");
+  const [skills, setSkills] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const skills = [
-    { name: "HTML", type: "frontend" },
-    { name: "CSS", type: "frontend" },
-    { name: "JavaScript", type: "frontend" },
-    { name: "React", type: "frontend" },
-    { name: "Bootstrap", type: "frontend" },
-
-    { name: "Java", type: "backend" },
-    { name: "Python", type: "backend" },
-    { name: "Flask", type: "backend" },
-    { name: "Node.js", type: "backend" },
-
-    { name: "MySQL", type: "database" },
-    { name: "PostgreSQL", type: "database" },
-    { name: "MongoDB", type: "database" },
-
-    { name: "GitHub", type: "tools" },
-    { name: "VS Code", type: "tools" },
-  ];
+  useEffect(() => {
+    fetch("http://localhost:5000/skills")
+      .then((res) => res.json())
+      .then((data) => {
+        setSkills(data);
+        setLoading(false);
+      })
+      .catch(() => {
+        setError("Failed to load skills");
+        setLoading(false);
+      });
+  }, []);
 
   const filteredSkills =
     filter === "all"
       ? skills
       : skills.filter((skill) => skill.type === filter);
+
+  if (loading) return <p>Loading skills...</p>;
+  if (error) return <p>{error}</p>;
 
   return (
     <div style={container}>
@@ -55,8 +54,7 @@ function Skills() {
   );
 }
 
-/* ---------- STYLES ---------- */
-
+/* styles same */
 const container = {
   maxWidth: "1000px",
   margin: "auto",
