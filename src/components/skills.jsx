@@ -5,7 +5,7 @@
 // 5. Event handling (filter buttons)
 // 6. Loading state
 // 7. Error handling (response.ok check)
-
+import React from "react";
 import { useState } from "react";
 import useFetch from "../hooks/useFetch";
 

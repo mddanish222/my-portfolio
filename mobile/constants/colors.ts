@@ -1,0 +1,16 @@
+export const COLORS = {
+  bg:        "#0a0a14",
+  bgAlt:     "#0d0d1a",
+  gold:      "#FFB400",
+  goldBg:    "rgba(255,180,0,0.1)",
+  goldBorder:"rgba(255,180,0,0.3)",
+  white:     "#ffffff",
+  text:      "#aaaaaa",
+  textDim:   "#666666",
+  textLight: "#dddddd",
+  card:      "rgba(255,255,255,0.04)",
+  cardBorder:"rgba(255,255,255,0.08)",
+  error:     "rgba(220,50,50,0.12)",
+  errorBorder:"rgba(220,50,50,0.3)",
+  errorText: "#ff8080",
+};

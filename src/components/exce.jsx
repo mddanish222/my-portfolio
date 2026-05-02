@@ -5,7 +5,7 @@
 // 4. API integration — fetches from /experience AND /certifications
 // 6. Loading state — spinner
 // 7. Error handling — response.ok check
-
+import React from "react";
 import useFetch from "../hooks/useFetch";
 
 // ═══════════════════════════════════════════════════════════════

@@ -1,3 +1,4 @@
+//app.jsx
 import { useState, useEffect } from "react";
 import Navbar from "./components/Navbar";
 import Skills from "./components/Skills";

@@ -5,7 +5,7 @@
 // 5. Event handling — expand/collapse, filter by type
 // 6. Loading state — skeleton cards
 // 7. Error handling — response.ok check + fallback UI
-
+import React from "react";
 import { useState } from "react";
 import useFetch from "../hooks/useFetch";
 
