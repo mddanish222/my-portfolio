@@ -102,7 +102,7 @@ function HeroContent() {
 
 // ─── ABOUT ────────────────────────────────────────────────────
 function About() {
-  const { data: education, loading } = useFetch("http://localhost:5000/education");
+  const { data: education, loading } = useFetch("https://mohammeddanish-portfolio.up.railway.app/education");
 
   return (
     <div style={aboutGrid}>

@@ -14,7 +14,7 @@ function Skills() {
   const [filter, setFilter] = useState("all"); // active filter tab
 
   // useFetch replaces useState(data/loading/error) + useEffect fetch block
-  const { data: skills, loading, error } = useFetch("http://localhost:5000/skills");
+  const { data: skills, loading, error } = useFetch("https://mohammeddanish-portfolio.up.railway.app/skills");
 
   const categories = ["all", "frontend", "backend", "mobile", "database", "tools"];
 

@@ -55,7 +55,7 @@ export function Experience() {
 // ═══════════════════════════════════════════════════════════════
 export function Certifications() {
   // useFetch replaces useState(certs/loading/error) + useEffect fetch block
-  const { data: certs, loading, error } = useFetch("http://localhost:5000/certifications");
+  const { data: certs, loading, error } = useFetch("https://mohammeddanish-portfolio.up.railway.app/certifications");
 
   // CONCEPT 6: Loading state
   if (loading) return <SectionLoader label="Certifications" />;
