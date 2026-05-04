@@ -11,7 +11,7 @@ pool.connect((err, client, release) => {
   if (err) {
     console.error("❌ Database connection failed:", err.message);
   } else {
-    console.log("✅ Connected to PostgreSQL (Railway)");
+    console.log("✅ Connected to PostgreSQL (Supabase)");
     release();
   }
 });
