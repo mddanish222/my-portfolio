@@ -15,7 +15,7 @@ function Projects() {
   const [filter, setFilter]     = useState("All"); // project type filter
 
   // useFetch replaces useState(projects/loading/error) + useEffect fetch block
-  const { data: projects, loading, error } = useFetch("https://mohammeddanish-portfolio.up.railway.app/projects");
+  const { data: projects, loading, error } = useFetch("https://my-portfolio-8qxi.onrender.com/projects");
 
   const filterOptions = ["All", "Personal", "Freelance", "Paid Freelance"];
 
