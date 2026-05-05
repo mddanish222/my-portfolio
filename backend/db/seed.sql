@@ -1,3 +1,5 @@
+
+/*seed.sql*/
 -- ============================================================
 -- SEED DATA — mirrors all hardcoded data from the old server.js
 -- Run after schema.sql
@@ -112,3 +114,6 @@ INSERT INTO certifications (title, issuer, note) VALUES
   ('CODE VITA Workshop',                               'College',             'C Programming'),
   ('Database Connectivity Workshop',                   'College',             'C# and MSSQL'),
   ('Warehouse Associate',                              'Atos Prayas Foundation', NULL);
+
+
+  

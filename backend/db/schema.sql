@@ -1,3 +1,4 @@
+/*schema.sql*/
 -- ============================================================
 -- PORTFOLIO DATABASE SCHEMA
 -- Run once to set up all tables
