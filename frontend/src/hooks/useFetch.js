@@ -1,4 +1,4 @@
-//usefetch.js
+// usefetch.js
 import { useState, useEffect } from "react";
 
 function useFetch(url) {
@@ -7,6 +7,8 @@ function useFetch(url) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    let isMounted = true; // ✅ fix for React test warnings
+
     setLoading(true);
 
     fetch(url)
@@ -17,13 +19,21 @@ function useFetch(url) {
         return res.json();
       })
       .then((data) => {
-        setData(data);
-        setLoading(false);
+        if (isMounted) {
+          setData(data);
+          setLoading(false);
+        }
       })
       .catch((err) => {
-        setError(err.message);
-        setLoading(false);
+        if (isMounted) {
+          setError(err.message);
+          setLoading(false);
+        }
       });
+
+    return () => {
+      isMounted = false; // ✅ cleanup
+    };
   }, [url]);
 
   return { data, loading, error };

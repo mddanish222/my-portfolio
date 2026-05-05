@@ -1,12 +1,17 @@
+/* usefetch.test.js */
 import { renderHook, waitFor } from "@testing-library/react";
 import useFetch from "../../hooks/usefetch.js";
 
 global.fetch = jest.fn();
 
+afterEach(() => {
+  jest.clearAllMocks();
+});
+
 test("fetch success", async () => {
   fetch.mockResolvedValueOnce({
     ok: true,
-    json: async () => ({ message: "ok" })
+    json: async () => ({ message: "ok" }),
   });
 
   const { result } = renderHook(() => useFetch("/api"));
