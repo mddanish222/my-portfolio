@@ -1,4 +1,4 @@
-/* usefetch.test.js */
+
 import { renderHook, waitFor } from "@testing-library/react";
 import useFetch from "../../hooks/usefetch.js";
 
