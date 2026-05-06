@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
-import { Experience, Certifications } from "../../components/exce.jsx";
+import { Experience, Certifications } from "../../components/Exce.jsx";
 
 beforeEach(() => {
   global.fetch = jest.fn();
