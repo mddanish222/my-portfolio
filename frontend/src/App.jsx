@@ -102,7 +102,7 @@ function HeroContent() {
 
 // ─── ABOUT ────────────────────────────────────────────────────
 function About() {
-  const { data: education, loading } = useFetch("http://localhost:5000/education");
+  const { data: education, loading } = useFetch("https://my-portfolio-8qxi.onrender.com/education");
 
   return (
     <div style={aboutGrid}>
