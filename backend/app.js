@@ -5,7 +5,7 @@
 //   • Input validation   (returns 400 on bad data)
 //   • DB error handling  (returns 500 on query failure)
 //   • 404 handling       (PUT/DELETE when id doesn't exist)
-// ─────────────────────────────────────────────────────────────
+// ────────────────────────────────────────────────────────────
 
 const express = require("express");
 const cors    = require("cors");
