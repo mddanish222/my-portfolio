@@ -13,7 +13,7 @@ import useFetch from "../hooks/useFetch";
 // ═══════════════════════════════════════════════════════════════
 export function Experience() {
   // useFetch replaces useState(experience/loading/error) + useEffect fetch block
-  const { data: experience, loading, error } = useFetch("https://my-portfolio-8qxi.onrender.com/experience");
+  const { data: experience, loading, error } = useFetch("http://localhost:5000/experience");
 
   // CONCEPT 6: Loading state
   if (loading) return <SectionLoader label="Experience" />;
@@ -55,7 +55,7 @@ export function Experience() {
 // ═══════════════════════════════════════════════════════════════
 export function Certifications() {
   // useFetch replaces useState(certs/loading/error) + useEffect fetch block
-  const { data: certs, loading, error } = useFetch("https://my-portfolio-8qxi.onrender.com/certifications");
+  const { data: certs, loading, error } = useFetch("http://localhost:5000/certifications");
 
   // CONCEPT 6: Loading state
   if (loading) return <SectionLoader label="Certifications" />;
