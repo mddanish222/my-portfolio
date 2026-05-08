@@ -1,18 +1,17 @@
-//navbar.jsx
 import { useState, useEffect } from "react";
 
 function Navbar() {
   const [active, setActive] = useState("home");
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 1400);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   const navItems = ["home", "about", "experience", "skills", "projects", "certifications", "contact"];
 
-  // Track window resize to toggle hamburger
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 1400);
-      if (window.innerWidth >= 1400) setMenuOpen(false);
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      if (!mobile) setMenuOpen(false);
     };
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
@@ -43,13 +42,18 @@ function Navbar() {
       <nav style={navStyle}>
         <span style={logoStyle}>MD</span>
 
-        {/* Desktop links — hidden on mobile */}
         {!isMobile && (
           <div style={linksStyle}>
             {navItems.map((item) => (
               <button
                 key={item}
                 style={active === item ? { ...btnStyle, ...activeBtnStyle } : btnStyle}
+                onMouseEnter={(e) => {
+                  if (active !== item) e.currentTarget.style.color = "#FFB400";
+                }}
+                onMouseLeave={(e) => {
+                  if (active !== item) e.currentTarget.style.color = "#aaa";
+                }}
                 onClick={() => scrollToSection(item)}
               >
                 {item.charAt(0).toUpperCase() + item.slice(1)}
@@ -58,21 +62,46 @@ function Navbar() {
           </div>
         )}
 
-        {/* Hamburger — shown only on mobile/laptop */}
         {isMobile && (
-          <button style={hamburgerStyle} onClick={() => setMenuOpen(!menuOpen)}>
-            {menuOpen ? "✕" : "☰"}
+          <button
+            style={{
+              ...hamburgerStyle,
+              background: menuOpen ? "rgba(255,180,0,0.1)" : "none",
+            }}
+            onClick={() => setMenuOpen((prev) => !prev)}
+            onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,180,0,0.1)")}
+            onMouseLeave={(e) => (e.currentTarget.style.background = menuOpen ? "rgba(255,180,0,0.1)" : "none")}
+            onFocus={(e) => (e.currentTarget.style.outline = "none")}
+            aria-label="Toggle menu"
+          >
+            {menuOpen ? (
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="#FFB400" strokeWidth="2.2" strokeLinecap="round">
+                <line x1="4" y1="4" x2="18" y2="18" />
+                <line x1="18" y1="4" x2="4" y2="18" />
+              </svg>
+            ) : (
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="#FFB400" strokeWidth="2.2" strokeLinecap="round">
+                <line x1="3" y1="6"  x2="19" y2="6"  />
+                <line x1="3" y1="11" x2="19" y2="11" />
+                <line x1="3" y1="16" x2="19" y2="16" />
+              </svg>
+            )}
           </button>
         )}
       </nav>
 
-      {/* Mobile dropdown menu — rendered outside nav so it overlays content */}
       {isMobile && menuOpen && (
         <div style={mobileMenu}>
           {navItems.map((item) => (
             <button
               key={item}
               style={active === item ? { ...mobileBtnStyle, ...activeBtnStyle } : mobileBtnStyle}
+              onMouseEnter={(e) => {
+                if (active !== item) e.currentTarget.style.color = "#FFB400";
+              }}
+              onMouseLeave={(e) => {
+                if (active !== item) e.currentTarget.style.color = "#aaa";
+              }}
               onClick={() => scrollToSection(item)}
             >
               {item.charAt(0).toUpperCase() + item.slice(1)}
@@ -84,13 +113,15 @@ function Navbar() {
   );
 }
 
-// ─── Styles ───────────────────────────────────────────────────
 const navStyle = {
   position: "fixed",
   top: 0,
+  left: 0,
+  right: 0,
   width: "100%",
   background: "rgba(10, 10, 20, 0.92)",
   backdropFilter: "blur(12px)",
+  WebkitBackdropFilter: "blur(12px)",
   padding: "14px 24px",
   display: "flex",
   alignItems: "center",
@@ -98,8 +129,6 @@ const navStyle = {
   zIndex: 1000,
   boxSizing: "border-box",
   borderBottom: "1px solid rgba(255,180,0,0.15)",
-  left: 0,
-  right: 0,
 };
 
 const logoStyle = {
@@ -113,7 +142,7 @@ const logoStyle = {
 const linksStyle = {
   display: "flex",
   gap: "4px",
-  flexWrap: "nowrap",        // never wrap — if it doesn't fit, hamburger takes over
+  flexWrap: "nowrap",
   alignItems: "center",
 };
 
@@ -121,15 +150,16 @@ const btnStyle = {
   background: "transparent",
   border: "1px solid transparent",
   color: "#aaa",
-  padding: "6px 7px",
+  padding: "6px 10px",
   cursor: "pointer",
   borderRadius: "6px",
-  fontSize: "11.5px",
+  fontSize: "13px",
   fontWeight: "500",
   textTransform: "capitalize",
   letterSpacing: "0.3px",
   transition: "all 0.2s",
   whiteSpace: "nowrap",
+  outline: "none",
 };
 
 const activeBtnStyle = {
@@ -139,22 +169,26 @@ const activeBtnStyle = {
 };
 
 const hamburgerStyle = {
-  background: "none",
   border: "none",
-  color: "#FFB400",
-  fontSize: "22px",
   cursor: "pointer",
-  padding: "4px 8px",
+  padding: "6px 8px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  borderRadius: "6px",
+  flexShrink: 0,
+  transition: "background 0.2s",
+  outline: "none",
 };
 
-// Full-width dropdown for mobile/laptop
 const mobileMenu = {
   position: "fixed",
-  top: "57px",               // just below the navbar
+  top: "57px",
   left: 0,
   right: 0,
   background: "rgba(10,10,20,0.97)",
   backdropFilter: "blur(12px)",
+  WebkitBackdropFilter: "blur(12px)",
   borderBottom: "1px solid rgba(255,180,0,0.15)",
   display: "flex",
   flexDirection: "column",
@@ -164,11 +198,20 @@ const mobileMenu = {
 };
 
 const mobileBtnStyle = {
-  ...btnStyle,
-  fontSize: "14px",
-  padding: "10px 14px",
+  background: "transparent",
+  border: "1px solid transparent",
+  color: "#aaa",
+  padding: "12px 14px",
+  cursor: "pointer",
+  borderRadius: "6px",
+  fontSize: "15px",
+  fontWeight: "500",
+  textTransform: "capitalize",
+  letterSpacing: "0.3px",
+  transition: "all 0.2s",
   textAlign: "left",
   width: "100%",
+  outline: "none",
 };
 
 export default Navbar;

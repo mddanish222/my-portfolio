@@ -1,58 +1,57 @@
 //projects.jsx
-// ─── CONCEPTS DEMONSTRATED ────────────────────────────────────
-// 1. React component + useState + useEffect
-// 4. API integration — fetch from /projects
-// 5. Event handling — expand/collapse, filter by type
-// 6. Loading state — skeleton cards
-// 7. Error handling — response.ok check + fallback UI
+
 import React from "react";
 import { useState } from "react";
 import useFetch from "../hooks/useFetch";
 
 function Projects() {
-  // CONCEPT 1: useState — multiple state variables
-  const [expanded, setExpanded] = useState(null);  // which card is open
-  const [filter, setFilter]     = useState("All"); // project type filter
+  const [expanded, setExpanded] = useState(null);
+  const [filter, setFilter]     = useState("All");
 
-  // useFetch replaces useState(projects/loading/error) + useEffect fetch block
   const { data: projects, loading, error } = useFetch("https://my-portfolio-8qxi.onrender.com/projects");
 
   const filterOptions = ["All", "Personal", "Freelance", "Paid Freelance"];
 
-  // CONCEPT 4: Dynamic rendering — filter projects array
   const filtered =
     filter === "All"
       ? projects
       : projects.filter((p) => p.type === filter);
 
-  // CONCEPT 5: Event handling — toggle expanded card
   const handleToggle = (id) => {
     setExpanded(expanded === id ? null : id);
   };
 
-  // status badge color logic
   const statusColor = (status) => {
-    if (status === "Completed")          return { bg: "rgba(30,180,100,0.15)", color: "#4ddb8f" };
-    if (status === "Ongoing")            return { bg: "rgba(255,180,0,0.12)",  color: "#FFB400"  };
-    if (status === "Awaiting Deployment")return { bg: "rgba(100,100,255,0.12)",color: "#8888ff"  };
+    if (status === "Completed")           return { bg: "rgba(30,180,100,0.15)",  color: "#4ddb8f" };
+    if (status === "Ongoing")             return { bg: "rgba(255,180,0,0.12)",   color: "#FFB400"  };
+    if (status === "Awaiting Deployment") return { bg: "rgba(100,100,255,0.12)", color: "#8888ff"  };
     return { bg: "rgba(255,255,255,0.08)", color: "#aaa" };
   };
 
-  // CONCEPT 6: Loading state — skeleton UI so screen isn't blank
   if (loading) {
     return (
       <div style={container}>
+        <style>{skeletonCSS}</style>
         <h2 style={titleStyle}>Projects</h2>
+        <p style={subtitleStyle}>Real-world applications I've built</p>
         <div style={grid}>
-          {Array(5).fill(null).map((_, i) => (
-            <div key={i} style={skeletonCard} />
+          {Array(6).fill(null).map((_, i) => (
+            <div key={i} className="skeleton-project" style={skeletonCard}>
+              {/* shimmer lines inside card */}
+              <div className="skeleton-project" style={skeletonLine("60%", "16px", "0 0 16px 0")} />
+              <div className="skeleton-project" style={skeletonLine("40%", "12px", "0 0 20px 0")} />
+              <div style={{ display: "flex", gap: "8px" }}>
+                <div className="skeleton-project" style={skeletonLine("25%", "10px")} />
+                <div className="skeleton-project" style={skeletonLine("25%", "10px")} />
+                <div className="skeleton-project" style={skeletonLine("25%", "10px")} />
+              </div>
+            </div>
           ))}
         </div>
       </div>
     );
   }
 
-  // CONCEPT 5: Error handling — friendly error UI
   if (error) {
     return (
       <div style={container}>
@@ -70,13 +69,17 @@ function Projects() {
       <h2 style={titleStyle}>Projects</h2>
       <p style={subtitleStyle}>Real-world applications I've built</p>
 
-      {/* CONCEPT 5: Event handling — filter by project type */}
-      {/* CONCEPT 4: Dynamic rendering — .map() over filterOptions */}
       <div style={filterBar}>
         {filterOptions.map((opt) => (
           <button
             key={opt}
             style={filter === opt ? { ...filterBtn, ...activeFilter } : filterBtn}
+            onMouseEnter={(e) => {
+              if (filter !== opt) e.currentTarget.style.borderColor = "rgba(255,180,0,0.4)";
+            }}
+            onMouseLeave={(e) => {
+              if (filter !== opt) e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)";
+            }}
             onClick={() => setFilter(opt)}
           >
             {opt}
@@ -84,7 +87,6 @@ function Projects() {
         ))}
       </div>
 
-      {/* CONCEPT 4: Dynamic rendering — .map() over filtered projects */}
       <div style={grid}>
         {filtered.map((project) => {
           const sc = statusColor(project.status);
@@ -93,25 +95,19 @@ function Projects() {
           return (
             <div key={project.id} style={{ ...card, ...(isOpen ? cardOpen : {}) }}>
 
-              {/* Header row: title + type badge */}
               <div style={cardHeader}>
                 <h3 style={cardTitle}>{project.title}</h3>
-                <span style={{ ...typeBadge }}>
-                  {project.type}
-                </span>
+                <span style={typeBadge}>{project.type}</span>
               </div>
 
-              {/* Status badge */}
               <span style={{ ...statusBadge, background: sc.bg, color: sc.color }}>
                 {project.status}
               </span>
 
-              {/* Tech stack chips — CONCEPT 4: nested .map() */}
               <div style={techRow}>
                 {project.tech.slice(0, isOpen ? project.tech.length : 3).map((t, i) => (
                   <span key={i} style={techChip}>{t}</span>
                 ))}
-                {/* CONCEPT 4: Conditional UI — show "+N more" when collapsed */}
                 {!isOpen && project.tech.length > 3 && (
                   <span style={{ ...techChip, opacity: 0.5 }}>
                     +{project.tech.length - 3} more
@@ -119,12 +115,10 @@ function Projects() {
                 )}
               </div>
 
-              {/* CONCEPT 4: Conditional UI — show details only when expanded */}
               {isOpen && (
                 <p style={descStyle}>{project.desc}</p>
               )}
 
-              {/* Links — CONCEPT 4: conditional rendering based on data */}
               {isOpen && (
                 <div style={linkRow}>
                   {project.github && (
@@ -143,7 +137,6 @@ function Projects() {
                 </div>
               )}
 
-              {/* CONCEPT 5: Event handling — toggle expand/collapse */}
               <button style={toggleBtn} onClick={() => handleToggle(project.id)}>
                 {isOpen ? "Show Less ↑" : "View Details ↓"}
               </button>
@@ -152,7 +145,6 @@ function Projects() {
         })}
       </div>
 
-      {/* CONCEPT 4: Conditional UI — empty state */}
       {filtered.length === 0 && (
         <p style={{ textAlign: "center", color: "#888", marginTop: "40px" }}>
           No projects found for "{filter}"
@@ -162,7 +154,28 @@ function Projects() {
   );
 }
 
-// ─── Styles ───────────────────────────────────────────────────
+
+const skeletonCSS = `
+  @keyframes projectPulse {
+    0%, 100% { opacity: 0.3; }
+    50%       { opacity: 0.65; }
+  }
+  .skeleton-project {
+    animation: projectPulse 1.5s ease-in-out infinite;
+  }
+`;
+
+// helper for skeleton lines inside cards
+const skeletonLine = (width, height, margin = "0") => ({
+  width,
+  height,
+  borderRadius: "6px",
+  background: "rgba(255,255,255,0.08)",
+  margin,
+  flexShrink: 0,
+});
+
+
 const container = {
   maxWidth: "1100px",
   margin: "0 auto",
@@ -200,6 +213,7 @@ const filterBtn = {
   cursor: "pointer",
   fontSize: "13px",
   transition: "all 0.2s",
+  outline: "none",
 };
 
 const activeFilter = {
@@ -319,12 +333,15 @@ const toggleBtn = {
   fontWeight: "600",
   padding: 0,
   letterSpacing: "0.3px",
+  outline: "none",
 };
 
 const skeletonCard = {
-  height: "180px",
   borderRadius: "14px",
-  background: "rgba(255,255,255,0.05)",
+  background: "rgba(255,255,255,0.04)",
+  border: "1px solid rgba(255,255,255,0.08)",
+  padding: "22px",
+  height: "160px",
 };
 
 const errorBox = {

@@ -1,12 +1,4 @@
 // app.js
-// ─────────────────────────────────────────────────────────────
-// All routes now read/write from PostgreSQL via the shared pool.
-// Every route has:
-//   • Input validation   (returns 400 on bad data)
-//   • DB error handling  (returns 500 on query failure)
-//   • 404 handling       (PUT/DELETE when id doesn't exist)
-// ────────────────────────────────────────────────────────────
-
 const express = require("express");
 const cors    = require("cors");
 const pool    = require("./db/pool");
@@ -60,8 +52,7 @@ app.get("/projects", async (req, res) => {
   }
 });
 
-// POST /projects — add a new project
-// Required body fields: title, desc, tech (array), type, status
+
 app.post("/projects", async (req, res) => {
   try {
     const { title, desc, tech, type, status, github, live } = req.body;
@@ -199,7 +190,7 @@ app.post("/skills", async (req, res) => {
   }
 });
 
-// PUT /skills/:id
+
 app.put("/skills/:id", async (req, res) => {
   try {
     const id = parseInt(req.params.id);
@@ -230,7 +221,7 @@ app.put("/skills/:id", async (req, res) => {
   }
 });
 
-// DELETE /skills/:id
+
 app.delete("/skills/:id", async (req, res) => {
   try {
     const id = parseInt(req.params.id);

@@ -1,30 +1,57 @@
-//exce.jsx
-
-// ─── CONCEPTS DEMONSTRATED ────────────────────────────────────
-// 1. React component + useState + useEffect
-// 4. API integration — fetches from /experience AND /certifications
-// 6. Loading state — spinner
-// 7. Error handling — response.ok check
 import React from "react";
 import useFetch from "../hooks/useFetch";
 
-// ═══════════════════════════════════════════════════════════════
-// EXPERIENCE COMPONENT
-// ═══════════════════════════════════════════════════════════════
+// ─── Skeleton keyframes ───────────────────────────────────────
+const skeletonCSS = `
+  @keyframes excePulse {
+    0%, 100% { opacity: 0.3; }
+    50%       { opacity: 0.65; }
+  }
+  .exce-skeleton {
+    animation: excePulse 1.5s ease-in-out infinite;
+  }
+`;
+
+
 export function Experience() {
-  // useFetch replaces useState(experience/loading/error) + useEffect fetch block
   const { data: experience, loading, error } = useFetch("https://my-portfolio-8qxi.onrender.com/experience");
 
-  // CONCEPT 6: Loading state
-  if (loading) return <SectionLoader label="Experience" />;
-  if (error)   return <SectionError label="Experience" message={error} />;
+  if (loading) {
+    return (
+      <div style={container}>
+        <style>{skeletonCSS}</style>
+        <h2 style={titleStyle}>Experience</h2>
+        <p style={subtitleStyle}>Professional work history</p>
+        {Array(2).fill(null).map((_, i) => (
+          <div key={i} style={expSkeletonCard}>
+            {/* header row */}
+            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "20px" }}>
+              <div>
+                <div className="exce-skeleton" style={skeletonLine("180px", "16px", "0 0 10px 0")} />
+                <div className="exce-skeleton" style={skeletonLine("140px", "12px")} />
+              </div>
+              <div style={{ textAlign: "right" }}>
+                <div className="exce-skeleton" style={skeletonLine("90px", "12px", "0 0 10px 0")} />
+                <div className="exce-skeleton" style={skeletonLine("70px", "11px")} />
+              </div>
+            </div>
+            {/* bullet lines */}
+            <div className="exce-skeleton" style={skeletonLine("100%", "11px", "0 0 8px 0")} />
+            <div className="exce-skeleton" style={skeletonLine("90%",  "11px", "0 0 8px 0")} />
+            <div className="exce-skeleton" style={skeletonLine("75%",  "11px")} />
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (error) return <SectionError label="Experience" message={error} />;
 
   return (
     <div style={container}>
       <h2 style={titleStyle}>Experience</h2>
       <p style={subtitleStyle}>Professional work history</p>
 
-      {/* CONCEPT 4: Dynamic rendering — .map() over experience array */}
       {experience.map((exp) => (
         <div key={exp.id} style={expCard}>
           <div style={expHeader}>
@@ -37,8 +64,6 @@ export function Experience() {
               <p style={stipendStyle}>{exp.stipend}</p>
             </div>
           </div>
-
-          {/* CONCEPT 4: Dynamic rendering — .map() over bullet points */}
           <ul style={bulletList}>
             {exp.points.map((point, i) => (
               <li key={i} style={bulletItem}>{point}</li>
@@ -50,23 +75,39 @@ export function Experience() {
   );
 }
 
-// ═══════════════════════════════════════════════════════════════
-// CERTIFICATIONS COMPONENT
-// ═══════════════════════════════════════════════════════════════
+
 export function Certifications() {
-  // useFetch replaces useState(certs/loading/error) + useEffect fetch block
   const { data: certs, loading, error } = useFetch("https://my-portfolio-8qxi.onrender.com/certifications");
 
-  // CONCEPT 6: Loading state
-  if (loading) return <SectionLoader label="Certifications" />;
-  if (error)   return <SectionError label="Certifications" message={error} />;
+  if (loading) {
+    return (
+      <div style={container}>
+        <style>{skeletonCSS}</style>
+        <h2 style={titleStyle}>Certifications</h2>
+        <p style={subtitleStyle}>Courses, workshops & achievements</p>
+        <div style={certGrid}>
+          {Array(6).fill(null).map((_, i) => (
+            <div key={i} style={certSkeletonCard}>
+              <div className="exce-skeleton" style={skeletonBlock("32px", "32px", "0")} />
+              <div style={{ flex: 1 }}>
+                <div className="exce-skeleton" style={skeletonLine("80%",  "13px", "0 0 8px 0")} />
+                <div className="exce-skeleton" style={skeletonLine("60%",  "11px", "0 0 8px 0")} />
+                <div className="exce-skeleton" style={skeletonLine("40%",  "10px")} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (error) return <SectionError label="Certifications" message={error} />;
 
   return (
     <div style={container}>
       <h2 style={titleStyle}>Certifications</h2>
       <p style={subtitleStyle}>Courses, workshops & achievements</p>
 
-      {/* CONCEPT 4: Dynamic rendering — .map() over certs */}
       <div style={certGrid}>
         {certs.map((cert) => (
           <div key={cert.id} style={certCard}>
@@ -74,16 +115,12 @@ export function Certifications() {
             <div>
               <p style={certTitle}>{cert.title}</p>
               <p style={certIssuer}>{cert.issuer}</p>
-              {/* CONCEPT 4: Conditional UI — show note badge if it exists */}
-              {cert.note && (
-                <span style={noteBadge}>{cert.note}</span>
-              )}
+              {cert.note && <span style={noteBadge}>{cert.note}</span>}
             </div>
           </div>
         ))}
       </div>
 
-      {/* Achievements sub-section — hardcoded (no API needed) */}
       <div style={achieveSection}>
         <h3 style={achieveTitle}>Achievements</h3>
         <div style={certGrid}>
@@ -108,26 +145,8 @@ export function Certifications() {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// SHARED HELPER COMPONENTS
-// (Reusable — demonstrates component composition)
+// ERROR COMPONENT
 // ═══════════════════════════════════════════════════════════════
-
-// CONCEPT 6: Reusable loading state component
-function SectionLoader({ label }) {
-  return (
-    <div style={container}>
-      <h2 style={titleStyle}>{label}</h2>
-      <div style={loaderWrap}>
-        <div style={spinner} />
-        <p style={{ color: "#666", fontSize: "14px", margin: "16px 0 0" }}>
-          Loading {label.toLowerCase()}...
-        </p>
-      </div>
-    </div>
-  );
-}
-
-// CONCEPT 5: Reusable error state component
 function SectionError({ label, message }) {
   return (
     <div style={container}>
@@ -135,15 +154,30 @@ function SectionError({ label, message }) {
       <div style={errorBox}>
         <p style={{ margin: 0, fontWeight: "600" }}>Failed to load {label.toLowerCase()}</p>
         <p style={{ margin: "6px 0 0", fontSize: "13px", opacity: 0.8 }}>{message}</p>
-        <p style={{ margin: "6px 0 0", fontSize: "12px", opacity: 0.6 }}>
-          Make sure the backend server is running on port 5000.
-        </p>
       </div>
     </div>
   );
 }
 
-// ─── Shared Styles ────────────────────────────────────────────
+// ─── Skeleton helpers ─────────────────────────────────────────
+const skeletonLine = (width, height, margin = "0") => ({
+  width,
+  height,
+  borderRadius: "6px",
+  background: "rgba(255,255,255,0.08)",
+  margin,
+});
+
+const skeletonBlock = (width, height, margin = "0") => ({
+  width,
+  height,
+  borderRadius: "8px",
+  background: "rgba(255,255,255,0.08)",
+  margin,
+  flexShrink: 0,
+});
+
+
 const container = {
   maxWidth: "900px",
   margin: "0 auto",
@@ -170,6 +204,15 @@ const expCard = {
   background: "rgba(255,255,255,0.04)",
   border: "1px solid rgba(255,255,255,0.08)",
   borderLeft: "3px solid #FFB400",
+  borderRadius: "0 12px 12px 0",
+  padding: "24px",
+  marginBottom: "20px",
+};
+
+const expSkeletonCard = {
+  background: "rgba(255,255,255,0.04)",
+  border: "1px solid rgba(255,255,255,0.08)",
+  borderLeft: "3px solid rgba(255,180,0,0.3)",
   borderRadius: "0 12px 12px 0",
   padding: "24px",
   marginBottom: "20px",
@@ -225,7 +268,7 @@ const bulletItem = {
   marginBottom: "6px",
 };
 
-// Certifications styles
+
 const certGrid = {
   display: "grid",
   gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
@@ -233,6 +276,16 @@ const certGrid = {
 };
 
 const certCard = {
+  display: "flex",
+  gap: "14px",
+  alignItems: "flex-start",
+  background: "rgba(255,255,255,0.04)",
+  border: "1px solid rgba(255,255,255,0.08)",
+  borderRadius: "12px",
+  padding: "16px",
+};
+
+const certSkeletonCard = {
   display: "flex",
   gap: "14px",
   alignItems: "flex-start",
@@ -282,22 +335,6 @@ const achieveTitle = {
   fontWeight: "600",
   marginBottom: "20px",
   textAlign: "center",
-};
-
-// Loader/error styles
-const loaderWrap = {
-  textAlign: "center",
-  padding: "60px 0",
-};
-
-const spinner = {
-  width: "36px",
-  height: "36px",
-  border: "3px solid rgba(255,180,0,0.15)",
-  borderTop: "3px solid #FFB400",
-  borderRadius: "50%",
-  margin: "0 auto",
-  animation: "spin 0.8s linear infinite",
 };
 
 const errorBox = {

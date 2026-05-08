@@ -1,44 +1,36 @@
 //skills.jsx
-// ─── CONCEPTS DEMONSTRATED ────────────────────────────────────
-// 1. React component + useState + useEffect
-// 4. API integration (fetch from backend)
-// 5. Event handling (filter buttons)
-// 6. Loading state
-// 7. Error handling (response.ok check)
+
 import React from "react";
 import { useState } from "react";
 import useFetch from "../hooks/useFetch";
 
 function Skills() {
-  // CONCEPT 1: useState — manages filter state
-  const [filter, setFilter] = useState("all"); // active filter tab
+  const [filter, setFilter] = useState("all");
 
-  // useFetch replaces useState(data/loading/error) + useEffect fetch block
   const { data: skills, loading, error } = useFetch("https://my-portfolio-8qxi.onrender.com/skills");
 
   const categories = ["all", "frontend", "backend", "mobile", "database", "tools"];
 
-  // CONCEPT 4: Dynamic rendering — filter skills array based on active tab
   const filteredSkills =
     filter === "all"
       ? skills
       : skills.filter((skill) => skill.type === filter);
 
-  // CONCEPT 6: Loading state — show skeleton while waiting for API
   if (loading) {
     return (
       <div style={container}>
+        <style>{skeletonCSS}</style>
         <h2 style={titleStyle}>Skills</h2>
+        <p style={subtitleStyle}>Technologies I work with</p>
         <div style={skeletonGrid}>
           {Array(8).fill(null).map((_, i) => (
-            <div key={i} style={skeletonCard} />
+            <div key={i} className="skeleton-card" style={skeletonCard} />
           ))}
         </div>
       </div>
     );
   }
 
-  // CONCEPT 5: Error state — show clear error message in UI
   if (error) {
     return (
       <div style={container}>
@@ -56,26 +48,28 @@ function Skills() {
       <h2 style={titleStyle}>Skills</h2>
       <p style={subtitleStyle}>Technologies I work with</p>
 
-      {/* CONCEPT 5: Event handling — filter buttons update state */}
-      {/* CONCEPT 4: Dynamic rendering — .map() renders filter tabs */}
       <div style={filterBar}>
         {categories.map((cat) => (
           <button
             key={cat}
             style={filter === cat ? { ...filterBtn, ...activeFilter } : filterBtn}
-            onClick={() => setFilter(cat)} // CONCEPT 1: setState triggers re-render
+            onMouseEnter={(e) => {
+              if (filter !== cat) e.currentTarget.style.borderColor = "rgba(255,180,0,0.4)";
+            }}
+            onMouseLeave={(e) => {
+              if (filter !== cat) e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)";
+            }}
+            onClick={() => setFilter(cat)}
           >
             {cat.charAt(0).toUpperCase() + cat.slice(1)}
           </button>
         ))}
       </div>
 
-      {/* CONCEPT 4: Dynamic rendering — .map() renders skill cards */}
       <div style={grid}>
         {filteredSkills.map((skill, index) => (
           <div key={index} style={card}>
             <div style={skillName}>{skill.name}</div>
-            {/* CONCEPT 4: Conditional UI — show level bar if level exists */}
             {skill.level && (
               <div style={barTrack}>
                 <div style={{ ...barFill, width: `${skill.level}%` }} />
@@ -88,7 +82,6 @@ function Skills() {
         ))}
       </div>
 
-      {/* CONCEPT 4: Conditional UI — show message if filter has no results */}
       {filteredSkills.length === 0 && (
         <p style={{ textAlign: "center", color: "#888", marginTop: "40px" }}>
           No skills found for "{filter}"
@@ -98,7 +91,17 @@ function Skills() {
   );
 }
 
-// ─── Styles ───────────────────────────────────────────────────
+
+const skeletonCSS = `
+  @keyframes skillPulse {
+    0%, 100% { opacity: 0.35; }
+    50%       { opacity: 0.7;  }
+  }
+  .skeleton-card {
+    animation: skillPulse 1.5s ease-in-out infinite;
+  }
+`;
+
 const container = {
   maxWidth: "1000px",
   margin: "0 auto",
@@ -137,12 +140,14 @@ const filterBtn = {
   fontSize: "13px",
   fontWeight: "500",
   transition: "all 0.2s",
+  outline: "none",
 };
 
 const activeFilter = {
   background: "#FFB400",
   color: "#0a0a14",
   borderColor: "#FFB400",
+  fontWeight: "600",
 };
 
 const grid = {
@@ -195,8 +200,7 @@ const skeletonGrid = {
 const skeletonCard = {
   height: "80px",
   borderRadius: "12px",
-  background: "rgba(255,255,255,0.05)",
-  animation: "pulse 1.5s ease-in-out infinite",
+  background: "rgba(255,255,255,0.06)",
 };
 
 const errorBox = {

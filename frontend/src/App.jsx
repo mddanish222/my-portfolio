@@ -1,4 +1,3 @@
-//app.jsx
 import { useState, useEffect } from "react";
 import Navbar from "./components/Navbar";
 import Skills from "./components/Skills";
@@ -47,7 +46,7 @@ function App() {
   );
 }
 
-// ─── HERO ─────────────────────────────────────────────────────
+
 function HeroContent() {
   const [visible, setVisible] = useState(false);
 
@@ -100,12 +99,37 @@ function HeroContent() {
   );
 }
 
-// ─── ABOUT ────────────────────────────────────────────────────
+
+const aboutSkeletonCSS = `
+  @keyframes aboutPulse {
+    0%, 100% { opacity: 0.3; }
+    50%       { opacity: 0.65; }
+  }
+  .about-skeleton {
+    animation: aboutPulse 1.5s ease-in-out infinite;
+  }
+`;
+
+
 function About() {
-  const { data: education, loading } = useFetch("https://my-portfolio-8qxi.onrender.com/education");
+  const { data: education, loading, error } = useFetch("https://my-portfolio-8qxi.onrender.com/education");
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
-    <div style={aboutGrid}>
+    <div
+      style={{
+        ...aboutGrid,
+        gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
+        gap: isMobile ? "40px" : "60px",
+        padding: "0 20px",
+      }}
+    >
       {/* Bio */}
       <div>
         <h2 style={sectionTitle}>About Me</h2>
@@ -120,7 +144,14 @@ function About() {
           (Consultant) at Ontum Education Pvt Ltd, Bengaluru.
         </p>
 
-        <div style={statsRow}>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(4, 1fr)",
+            gap: "12px",
+            marginTop: "32px",
+          }}
+        >
           {[
             { label: "Projects",  value: "5+" },
             { label: "CGPA",      value: "8.52" },
@@ -135,33 +166,111 @@ function About() {
         </div>
       </div>
 
-      {/* Education timeline */}
       <div>
-        <h3 style={{ color: "#fff", fontSize: "18px", marginBottom: "20px" }}>Education</h3>
-        {loading ? (
-          <p style={{ color: "#666", fontSize: "14px" }}>Loading education...</p>
-        ) : (
-          education.map((edu) => (
-            <div key={edu.id} style={eduCard}>
-              <div style={eduDot} />
-              <div style={{ flex: 1 }}>
-                <p style={eduDegree}>{edu.degree}</p>
-                <p style={eduInstitution}>{edu.institution}</p>
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
-                  <span style={eduScore}>{edu.score}</span>
-                  <span style={eduYear}>{edu.year}</span>
-                </div>
-              </div>
+  <style>{aboutSkeletonCSS}</style>
+  <h3 style={{ color: "#fff", fontSize: "18px", marginBottom: "20px" }}>
+    Education
+  </h3>
+
+  {loading ? (
+    <div>
+      {Array(3).fill(null).map((_, i) => (
+        <div
+          key={i}
+          style={{
+            display: "flex",
+            gap: "16px",
+            marginBottom: "28px",
+            alignItems: "flex-start",
+          }}
+        >
+          <div
+            className="about-skeleton"
+            style={{
+              width: "10px",
+              height: "10px",
+              borderRadius: "50%",
+              background: "rgba(255,180,0,0.4)",
+              marginTop: "5px",
+              flexShrink: 0,
+            }}
+          />
+          <div style={{ flex: 1 }}>
+            <div className="about-skeleton" style={eduSkeletonLine("70%", "14px", "0 0 8px 0")} />
+            <div className="about-skeleton" style={eduSkeletonLine("55%", "12px", "0 0 8px 0")} />
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <div className="about-skeleton" style={eduSkeletonLine("30%", "11px")} />
+              <div className="about-skeleton" style={eduSkeletonLine("20%", "11px")} />
             </div>
-          ))
-        )}
+          </div>
+        </div>
+      ))}
+    </div>
+  ) : error ? (
+  <div
+    style={{
+      background: "rgba(220,50,50,0.1)",
+      border: "1px solid rgba(220,50,50,0.3)",
+      color: "#ff8080",
+      padding: "24px",
+      borderRadius: "12px",
+      textAlign: "center",
+    }}
+  >
+    <p style={{ margin: 0, fontWeight: "600" }}>
+      Failed to load education
+    </p>
+
+    <p
+      style={{
+        margin: "6px 0 0",
+        fontSize: "13px",
+        opacity: 0.8,
+      }}
+    >
+      {error}
+    </p>
+  </div>
+  ) : (
+    education.map((edu) => (
+      <div key={edu.id} style={eduCard}>
+        <div style={eduDot} />
+        <div style={{ flex: 1 }}>
+          <p style={eduDegree}>{edu.degree}</p>
+          <p style={eduInstitution}>{edu.institution}</p>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <span style={eduScore}>{edu.score}</span>
+            <span style={eduYear}>{edu.year}</span>
+          </div>
+        </div>
       </div>
+    ))
+  )}
+</div>
+        
     </div>
   );
 }
 
-// ─── CONTACT ──────────────────────────────────────────────────
+// helper used inside About
+const eduSkeletonLine = (width, height, margin = "0") => ({
+  width,
+  height,
+  borderRadius: "6px",
+  background: "rgba(255,255,255,0.08)",
+  margin,
+});
+
+
 function Contact() {
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <div style={contactWrap}>
       <h2 style={{ ...sectionTitle, textAlign: "center" }}>Contact</h2>
@@ -169,7 +278,12 @@ function Contact() {
         Let's build something together
       </p>
 
-      <div style={contactGrid}>
+      <div
+        style={{
+          ...contactGrid,
+          gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
+        }}
+      >
         {[
           { label: "Email",    value: "mdddanish854@gmail.com" },
           { label: "Phone",    value: "9206634786" },
@@ -186,11 +300,11 @@ function Contact() {
   );
 }
 
-// ─── GLOBAL STYLES ────────────────────────────────────────────
+
 const globalCSS = `
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
-  body { background: #0a0a14; font-family: 'Segoe UI', system-ui, sans-serif; }
+  body { background: #0a0a14; font-family: 'Segoe UI', system-ui, sans-serif; overflow-x: hidden; }
   @keyframes spin { to { transform: rotate(360deg); } }
   @keyframes pulse { 0%,100% { opacity:0.4; } 50% { opacity:0.8; } }
   input::placeholder, textarea::placeholder { color: #444; }
@@ -199,7 +313,7 @@ const globalCSS = `
   a:hover { opacity: 0.8; }
 `;
 
-const appStyle = { color: "#fff", minHeight: "100vh" };
+const appStyle = { color: "#fff", minHeight: "100vh", overflowX: "hidden" };
 
 const heroSection = {
   minHeight: "100vh",
@@ -207,12 +321,12 @@ const heroSection = {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  padding: "120px 40px 80px",
+  padding: "120px 24px 80px",
   textAlign: "center",
 };
 
 const section = (bg) => ({
-  minHeight: "100vh",
+  minHeight: "60vh",
   background: bg,
   padding: "100px 20px",
   display: "flex",
@@ -220,7 +334,7 @@ const section = (bg) => ({
   justifyContent: "center",
 });
 
-const heroContent = { maxWidth: "700px" };
+const heroContent = { maxWidth: "700px", width: "100%" };
 
 const heroBadge = {
   display: "inline-block",
@@ -233,7 +347,7 @@ const heroBadge = {
 };
 
 const heroTitle = {
-  fontSize: "clamp(36px, 6vw, 64px)",
+  fontSize: "clamp(36px, 10vw, 64px)",
   fontWeight: "800",
   lineHeight: 1.1,
   marginBottom: "16px",
@@ -242,14 +356,14 @@ const heroTitle = {
 };
 
 const heroRole = {
-  fontSize: "16px",
+  fontSize: "clamp(13px, 3.5vw, 16px)",
   color: "#888",
   marginBottom: "20px",
   letterSpacing: "0.5px",
 };
 
 const heroDesc = {
-  fontSize: "15px",
+  fontSize: "clamp(13px, 3.5vw, 15px)",
   color: "#aaa",
   lineHeight: "1.7",
   marginBottom: "36px",
@@ -257,7 +371,13 @@ const heroDesc = {
   margin: "0 auto 36px",
 };
 
-const heroButtons = { display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" };
+const heroButtons = {
+  display: "flex",
+  gap: "12px",
+  justifyContent: "center",
+  flexWrap: "wrap",
+  padding: "0 8px",
+};
 
 const primaryBtn = {
   padding: "12px 28px",
@@ -294,20 +414,31 @@ const ghostBtn = {
   alignItems: "center",
 };
 
-const sectionTitle = { fontSize: "36px", fontWeight: "700", color: "#fff", marginBottom: "24px" };
+const sectionTitle = {
+  fontSize: "clamp(28px, 6vw, 36px)",
+  fontWeight: "700",
+  color: "#fff",
+  marginBottom: "24px",
+};
 
 const aboutGrid = {
   maxWidth: "1000px",
   width: "100%",
   display: "grid",
-  gridTemplateColumns: "1fr 1fr",
-  gap: "60px",
   alignItems: "start",
 };
 
 const bioText   = { color: "#aaa", fontSize: "15px", lineHeight: "1.8", marginBottom: "16px" };
-const statsRow  = { display: "flex", gap: "16px", marginTop: "32px", flexWrap: "wrap" };
-const statBox   = { background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "10px", padding: "16px 20px", display: "flex", flexDirection: "column", alignItems: "center" };
+const statsRow  = {};
+const statBox   = {
+  background: "rgba(255,255,255,0.04)",
+  border: "1px solid rgba(255,255,255,0.08)",
+  borderRadius: "10px",
+  padding: "16px 20px",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+};
 const statValue = { fontSize: "24px", fontWeight: "700", color: "#FFB400" };
 const statLabel = { fontSize: "11px", color: "#666", marginTop: "4px", textTransform: "uppercase", letterSpacing: "0.5px" };
 
@@ -318,11 +449,10 @@ const eduInstitution = { color: "#888", fontSize: "13px", marginBottom: "6px" };
 const eduScore       = { color: "#FFB400", fontSize: "12px", fontWeight: "600" };
 const eduYear        = { color: "#555", fontSize: "12px" };
 
-const contactWrap = { maxWidth: "700px", width: "100%", margin: "0 auto" };
+const contactWrap = { maxWidth: "700px", width: "100%", margin: "0 auto", padding: "0 16px" };
 
 const contactGrid = {
   display: "grid",
-  gridTemplateColumns: "1fr 1fr",
   gap: "16px",
 };
 
@@ -339,8 +469,15 @@ const infoCard = {
 };
 
 const infoLabel = { fontSize: "11px", color: "#FFB400", textTransform: "uppercase", letterSpacing: "0.5px" };
-const infoValue = { fontSize: "14px", color: "#ccc" };
+const infoValue = { fontSize: "14px", color: "#ccc", wordBreak: "break-all" };
 
-const footerStyle = { textAlign: "center", padding: "24px", color: "#444", fontSize: "13px", borderTop: "1px solid rgba(255,255,255,0.05)", background: "#0a0a14" };
+const footerStyle = {
+  textAlign: "center",
+  padding: "24px",
+  color: "#444",
+  fontSize: "13px",
+  borderTop: "1px solid rgba(255,255,255,0.05)",
+  background: "#0a0a14",
+};
 
 export default App;

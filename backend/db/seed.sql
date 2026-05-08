@@ -1,10 +1,5 @@
 
-/*seed.sql*/
--- ============================================================
--- SEED DATA — mirrors all hardcoded data from the old server.js
--- Run after schema.sql
--- Command: psql -U postgres -d portfolio_db -f db/seed.sql
--- ============================================================
+
 
 -- Clear existing data (safe to re-run)
 TRUNCATE projects, skills, experience, education, certifications RESTART IDENTITY CASCADE;

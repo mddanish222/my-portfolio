@@ -9,7 +9,7 @@ const pool = require("../db/pool");
 
 describe("Skills API", () => {
 
-  // ✅ GET success
+  //  GET success
   test("GET /skills returns data", async () => {
     pool.query.mockResolvedValue({
       rows: [
@@ -24,7 +24,7 @@ describe("Skills API", () => {
   });
 
 
-  // ✅ POST success
+  //  POST success
   test("POST /skills success", async () => {
     pool.query.mockResolvedValue({
       rows: [
@@ -44,7 +44,7 @@ describe("Skills API", () => {
   });
 
 
-  // ❌ LEVEL BELOW 0
+  
   test("POST level below 0 returns 400", async () => {
     const res = await request(app)
       .post("/skills")
@@ -58,7 +58,7 @@ describe("Skills API", () => {
   });
 
 
-  // ❌ LEVEL ABOVE 100
+  
   test("POST level above 100 returns 400", async () => {
     const res = await request(app)
       .post("/skills")
@@ -72,7 +72,7 @@ describe("Skills API", () => {
   });
 
 
-  // ✅ EDGE VALUE 0
+  //  EDGE VALUE 0
   test("POST level 0 is valid", async () => {
     pool.query.mockResolvedValue({
       rows:[{ id:1, name:"Test", type:"frontend", level:0 }]
@@ -90,7 +90,7 @@ describe("Skills API", () => {
   });
 
 
-  // ✅ EDGE VALUE 100
+  //  EDGE VALUE 100
   test("POST level 100 is valid", async () => {
     pool.query.mockResolvedValue({
       rows:[{ id:1, name:"Test", type:"frontend", level:100 }]
@@ -108,7 +108,7 @@ describe("Skills API", () => {
   });
 
 
-  // ❌ 404 update
+  //  404 update
   test("PUT not found returns 404", async () => {
     pool.query.mockResolvedValue({ rowCount:0 });
 
@@ -124,7 +124,7 @@ describe("Skills API", () => {
   });
 
 
-  // ❌ DB error
+  //  DB error
   test("GET DB error returns 500", async () => {
     pool.query.mockRejectedValue(new Error("DB fail"));
 
