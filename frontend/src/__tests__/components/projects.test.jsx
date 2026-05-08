@@ -1,3 +1,4 @@
+//project.test.jsx
 import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import Projects from "../../components/Projects.jsx";
@@ -23,7 +24,7 @@ describe("Projects Component", () => {
 
     render(<Projects />);
 
-    const boxes = document.querySelectorAll("div[style*='height: 180px']");
+    const boxes = document.querySelectorAll("div[style*='height: 160px']");
     expect(boxes.length).toBeGreaterThan(0);
   });
 

@@ -9,14 +9,13 @@ beforeEach(() => {
 describe("Experience Component", () => {
 
   test("shows loading initially", () => {
-    fetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => []
-    });
+  fetch.mockImplementation(() => new Promise(() => {}));
 
-    render(<Experience />);
-    expect(screen.getByText(/loading experience/i)).toBeInTheDocument();
-  });
+  render(<Experience />);
+
+  const skeletons = document.querySelectorAll(".exce-skeleton");
+  expect(skeletons.length).toBeGreaterThan(0);
+});
 
   test("renders experience data", async () => {
     fetch.mockResolvedValueOnce({
