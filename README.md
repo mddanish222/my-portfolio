@@ -92,5 +92,3 @@ mobile/ (Expo)
 
 
 
-## 📄 License
-MIT
