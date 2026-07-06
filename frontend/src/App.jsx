@@ -1,0 +1,689 @@
+//app.jsx
+import { useState, useEffect } from "react";
+import Navbar from "./components/Navbar";
+import Skills from "./components/Skills";
+import Projects from "./components/Projects";
+import { Experience, Certifications } from "./components/Exce";
+import useFetch from "./hooks/useFetch";
+
+function App() {
+  return (
+    <div style={appStyle}>
+      <style>{globalCSS}</style>
+      <Navbar />
+
+      <section id="home" style={heroSection}>
+        <HeroContent />
+      </section>
+
+      <section id="about" style={section("#0d0d1a")}>
+        <About />
+      </section>
+
+      <section id="experience" style={section("#0a0a14")}>
+        <Experience />
+      </section>
+
+      <section id="skills" style={section("#0d0d1a")}>
+        <Skills />
+      </section>
+
+      <section id="projects" style={section("#0a0a14")}>
+        <Projects />
+      </section>
+
+      <section id="certifications" style={section("#0d0d1a")}>
+        <Certifications />
+      </section>
+
+      <section id="contact" style={section("#0a0a14")}>
+        <Contact />
+      </section>
+
+      <footer style={footerStyle}>
+        <p>Designed & built by Mohammed Danish · {new Date().getFullYear()}</p>
+      </footer>
+    </div>
+  );
+}
+
+
+function HeroContent() {
+  const [visible, setVisible] = useState(false);
+  const { data: photoData } = useFetch("/settings/profile_photo");
+
+  useEffect(() => {
+    const t = setTimeout(() => setVisible(true), 100);
+    return () => clearTimeout(t);
+  }, []);
+
+  return (
+    <div
+      style={{
+        ...heroContent,
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(30px)",
+        transition: "all 0.8s ease",
+      }}
+    >
+      {photoData?.value && (
+        <div style={heroPhotoWrapper}>
+          <img src={photoData.value} alt="Mohammed Danish" style={heroPhotoImg} />
+        </div>
+      )}
+
+      <div style={heroBadge}>Available for opportunities</div>
+
+      <h1 style={heroTitle}>
+        <span style={{ whiteSpace: "nowrap" }}>
+          <span style={{ color: "#fff" }}>Mohammed </span>
+          <span style={{ color: "#FFB400" }}>Danish</span>
+        </span>
+      </h1>
+
+      <p style={heroRole}>
+        <span style={{ whiteSpace: "nowrap" }}>Full Stack Developer</span> ·{" "}
+        <span style={{ whiteSpace: "nowrap" }}>BCA Student</span> ·{" "}
+        <span style={{ whiteSpace: "nowrap" }}>Android Developer</span>
+      </p>
+
+      <p style={heroDesc}>
+        Building web and mobile applications with clean architecture and modern
+        technologies. Currently contributing to the MentorAI platform at Ontum Education.
+      </p>
+
+      <div style={heroButtons}>
+        <button
+          style={primaryBtn}
+          onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })}
+        >
+          View Projects
+        </button>
+        <button
+          style={secondaryBtn}
+          onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
+        >
+          Contact Me
+        </button>
+        <a href="https://github.com/mddanish222" target="_blank" rel="noreferrer" style={ghostBtn}>
+          GitHub
+        </a>
+      </div>
+    </div>
+  );
+}
+
+
+const aboutSkeletonCSS = `
+  @keyframes aboutPulse {
+    0%, 100% { opacity: 0.3; }
+    50%       { opacity: 0.65; }
+  }
+  .about-skeleton {
+    animation: aboutPulse 1.5s ease-in-out infinite;
+  }
+`;
+
+
+function About() {
+  const { data: education, loading, error } = useFetch("/education");
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  return (
+    <div
+      style={{
+        ...aboutGrid,
+        gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
+        gap: isMobile ? "40px" : "60px",
+        padding: "0 20px",
+      }}
+    >
+      {/* Bio */}
+      <div>
+        <h2 style={sectionTitle}>About Me</h2>
+        <p className="bio-text" style={bioText}>
+          I'm a passionate BCA student at Seshadripuram College (CGPA: 8.52) specialising
+          in web and app development. I've built full-stack applications using React,
+          Node.js, Flask, and databases like MongoDB and PostgreSQL.
+        </p>
+        <p className="bio-text" style={bioText}>
+          I work on real-world freelance and client projects — focusing on clean design,
+          performance, and user-friendly interfaces. Currently a Full Stack Developer
+          (Consultant) at Ontum Education Pvt Ltd, Bengaluru.
+        </p>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(4, 1fr)",
+            gap: "12px",
+            marginTop: "32px",
+          }}
+        >
+          {[
+            { label: "Projects",  value: "5+" },
+            { label: "CGPA",      value: "8.52" },
+            { label: "PUC Score", value: "91%" },
+            { label: "Since",     value: "2024" },
+          ].map((s) => (
+            <div key={s.label} style={statBox}>
+              <span style={statValue}>{s.value}</span>
+              <span style={statLabel}>{s.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div>
+  <style>{aboutSkeletonCSS}</style>
+  <h3 style={{ color: "#fff", fontSize: "18px", marginBottom: "20px" }}>
+    Education
+  </h3>
+
+  {loading ? (
+    <div>
+      {Array(3).fill(null).map((_, i) => (
+        <div
+          key={i}
+          style={{
+            display: "flex",
+            gap: "16px",
+            marginBottom: "28px",
+            alignItems: "flex-start",
+          }}
+        >
+          <div
+            className="about-skeleton"
+            style={{
+              width: "10px",
+              height: "10px",
+              borderRadius: "50%",
+              background: "rgba(255,180,0,0.4)",
+              marginTop: "5px",
+              flexShrink: 0,
+            }}
+          />
+          <div style={{ flex: 1 }}>
+            <div className="about-skeleton" style={eduSkeletonLine("70%", "14px", "0 0 8px 0")} />
+            <div className="about-skeleton" style={eduSkeletonLine("55%", "12px", "0 0 8px 0")} />
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <div className="about-skeleton" style={eduSkeletonLine("30%", "11px")} />
+              <div className="about-skeleton" style={eduSkeletonLine("20%", "11px")} />
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  ) : error ? (
+  <div
+    style={{
+      background: "rgba(220,50,50,0.1)",
+      border: "1px solid rgba(220,50,50,0.3)",
+      color: "#ff8080",
+      padding: "24px",
+      borderRadius: "12px",
+      textAlign: "center",
+    }}
+  >
+    <p style={{ margin: 0, fontWeight: "600" }}>
+      Failed to load education
+    </p>
+
+    <p
+      style={{
+        margin: "6px 0 0",
+        fontSize: "13px",
+        opacity: 0.8,
+      }}
+    >
+      {error}
+    </p>
+  </div>
+  ) : (
+    education.map((edu) => (
+      <div key={edu.id} style={eduCard}>
+        <div style={eduDot} />
+        <div style={{ flex: 1 }}>
+          <p style={eduDegree}>{edu.degree}</p>
+          <p style={eduInstitution}>{edu.institution}</p>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <span style={eduScore}>{edu.score}</span>
+            <span style={eduYear}>{edu.year}</span>
+          </div>
+        </div>
+      </div>
+    ))
+  )}
+</div>
+        
+    </div>
+  );
+}
+
+// helper used inside About
+const eduSkeletonLine = (width, height, margin = "0") => ({
+  width,
+  height,
+  borderRadius: "6px",
+  background: "rgba(255,255,255,0.08)",
+  margin,
+});
+
+
+function Contact() {
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [showEmailModal, setShowEmailModal] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const handleCopyEmail = () => {
+    navigator.clipboard.writeText("mdddanish854@gmail.com");
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleCardClick = (item) => {
+    if (item.label === "Email") {
+      setShowEmailModal(true);
+    } else if (item.label === "Phone") {
+      window.location.href = `tel:${item.value}`;
+    } else if (item.label === "GitHub") {
+      window.open(`https://${item.value}`, "_blank", "noopener,noreferrer");
+    } else if (item.label === "LinkedIn") {
+      window.open(`https://${item.value}`, "_blank", "noopener,noreferrer");
+    }
+  };
+
+  return (
+    <div style={contactWrap}>
+      <h2 style={{ ...sectionTitle, textAlign: "center" }}>Contact</h2>
+      <p style={{ color: "#888", textAlign: "center", marginBottom: "48px" }}>
+        Let's build something together
+      </p>
+
+      <div
+        style={{
+          ...contactGrid,
+          gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
+        }}
+      >
+        {[
+          { label: "Email",    value: "mdddanish854@gmail.com" },
+          { label: "Phone",    value: "9206634786" },
+          { label: "GitHub",   value: "github.com/mddanish222" },
+          { label: "LinkedIn", value: "linkedin.com/in/mohammeddanish" },
+        ].map((c) => (
+          <div
+            key={c.label}
+            className="contact-card"
+            style={infoCard}
+            onClick={() => handleCardClick(c)}
+          >
+            <span style={infoLabel}>{c.label}</span>
+            <span style={infoValue}>{c.value}</span>
+          </div>
+        ))}
+      </div>
+
+      {showEmailModal && (
+        <div style={modalOverlay} onClick={() => setShowEmailModal(false)}>
+          <div style={modalContent} onClick={(e) => e.stopPropagation()}>
+            <h3 style={modalTitle}>Connect via Email</h3>
+            <p style={modalEmailText}>mdddanish854@gmail.com</p>
+            
+            <div style={modalActionRow}>
+              <button style={modalCopyBtn} onClick={handleCopyEmail}>
+                {copied ? "Copied! ✓" : "Copy Address"}
+              </button>
+              <a
+                href="mailto:mdddanish854@gmail.com"
+                style={modalMailBtn}
+                onClick={() => setShowEmailModal(false)}
+              >
+                Send Message
+              </a>
+            </div>
+
+            <button style={modalCloseBtn} onClick={() => setShowEmailModal(false)}>
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+
+const globalCSS = `
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: #0a0a14; font-family: 'Segoe UI', system-ui, sans-serif; overflow-x: hidden; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes pulse { 0%,100% { opacity:0.4; } 50% { opacity:0.8; } }
+  input::placeholder, textarea::placeholder { color: #444; }
+  input:focus, textarea:focus { outline: none; border-color: rgba(255,180,0,0.5) !important; }
+  a { transition: opacity 0.2s; }
+  a:hover { opacity: 0.8; }
+  .contact-card {
+    transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+    cursor: pointer;
+  }
+  .contact-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 180, 0, 0.3) !important;
+    background: rgba(255, 255, 255, 0.07) !important;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  .bio-text {
+    text-align: left;
+  }
+  @media (min-width: 768px) {
+    .bio-text {
+      text-align: justify;
+    }
+  }
+`;
+
+const appStyle = { color: "#fff", minHeight: "100vh", overflowX: "hidden" };
+
+const heroSection = {
+  minHeight: "100vh",
+  background: "radial-gradient(ellipse at 30% 50%, rgba(255,180,0,0.06) 0%, transparent 60%), #0a0a14",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  padding: "120px 24px 80px",
+  textAlign: "center",
+};
+
+const section = (bg) => ({
+  minHeight: "60vh",
+  background: bg,
+  padding: "100px 20px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+});
+
+const heroContent = { maxWidth: "700px", width: "100%" };
+
+const heroPhotoWrapper = {
+  width: "150px",
+  height: "150px",
+  borderRadius: "50%",
+  padding: "4px",
+  border: "2.5px solid #FFB400",
+  background: "#0a0a14",
+  boxShadow: "0 0 20px rgba(255, 180, 0, 0.25)",
+  margin: "0 auto 24px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  overflow: "hidden",
+};
+
+const heroPhotoImg = {
+  width: "100%",
+  height: "100%",
+  borderRadius: "50%",
+  objectFit: "cover",
+};
+
+const heroBadge = {
+  display: "inline-block",
+  padding: "6px 16px",
+  borderRadius: "20px",
+  border: "1px solid rgba(255,180,0,0.3)",
+  color: "#FFB400",
+  fontSize: "13px",
+  marginBottom: "24px",
+};
+
+const heroTitle = {
+  fontSize: "clamp(26px, 8vw, 64px)",
+  fontWeight: "800",
+  lineHeight: 1.1,
+  marginBottom: "16px",
+  letterSpacing: "-1px",
+  color: "#fff",
+};
+
+const heroRole = {
+  fontSize: "clamp(13px, 3.5vw, 16px)",
+  color: "#888",
+  marginBottom: "20px",
+  letterSpacing: "0.5px",
+};
+
+const heroDesc = {
+  fontSize: "clamp(13px, 3.5vw, 15px)",
+  color: "#aaa",
+  lineHeight: "1.7",
+  marginBottom: "36px",
+  maxWidth: "560px",
+  margin: "0 auto 36px",
+};
+
+const heroButtons = {
+  display: "flex",
+  gap: "12px",
+  justifyContent: "center",
+  flexWrap: "wrap",
+  padding: "0 8px",
+};
+
+const primaryBtn = {
+  padding: "12px 28px",
+  background: "#FFB400",
+  color: "#0a0a14",
+  border: "none",
+  borderRadius: "8px",
+  fontWeight: "700",
+  fontSize: "14px",
+  cursor: "pointer",
+};
+
+const secondaryBtn = {
+  padding: "12px 28px",
+  background: "transparent",
+  color: "#FFB400",
+  border: "1px solid #FFB400",
+  borderRadius: "8px",
+  fontWeight: "600",
+  fontSize: "14px",
+  cursor: "pointer",
+};
+
+const ghostBtn = {
+  padding: "12px 28px",
+  background: "transparent",
+  color: "#aaa",
+  border: "1px solid rgba(255,255,255,0.15)",
+  borderRadius: "8px",
+  fontWeight: "500",
+  fontSize: "14px",
+  textDecoration: "none",
+  display: "inline-flex",
+  alignItems: "center",
+};
+
+const sectionTitle = {
+  fontSize: "clamp(28px, 6vw, 36px)",
+  fontWeight: "700",
+  color: "#fff",
+  marginBottom: "24px",
+};
+
+const aboutGrid = {
+  maxWidth: "1000px",
+  width: "100%",
+  display: "grid",
+  alignItems: "start",
+};
+
+const bioText   = { color: "#aaa", fontSize: "15px", lineHeight: "1.8", marginBottom: "16px" };
+const statsRow  = {};
+const statBox   = {
+  background: "rgba(255,255,255,0.04)",
+  border: "1px solid rgba(255,255,255,0.08)",
+  borderRadius: "10px",
+  padding: "16px 20px",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+};
+const statValue = { fontSize: "24px", fontWeight: "700", color: "#FFB400" };
+const statLabel = { fontSize: "11px", color: "#666", marginTop: "4px", textTransform: "uppercase", letterSpacing: "0.5px" };
+
+const eduCard        = { display: "flex", gap: "16px", marginBottom: "24px", alignItems: "flex-start" };
+const eduDot         = { width: "10px", height: "10px", borderRadius: "50%", background: "#FFB400", marginTop: "5px", flexShrink: 0 };
+const eduDegree      = { color: "#fff", fontWeight: "600", fontSize: "14px", marginBottom: "3px" };
+const eduInstitution = { color: "#888", fontSize: "13px", marginBottom: "6px" };
+const eduScore       = { color: "#FFB400", fontSize: "12px", fontWeight: "600" };
+const eduYear        = { color: "#555", fontSize: "12px" };
+
+const contactWrap = { maxWidth: "700px", width: "100%", margin: "0 auto", padding: "0 16px" };
+
+const contactGrid = {
+  display: "grid",
+  gap: "16px",
+};
+
+const infoCard = {
+  background: "rgba(255,255,255,0.04)",
+  border: "1px solid rgba(255,255,255,0.08)",
+  borderRadius: "10px",
+  padding: "24px 18px",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  gap: "8px",
+  textAlign: "center",
+};
+
+const infoLabel = { fontSize: "11px", color: "#FFB400", textTransform: "uppercase", letterSpacing: "0.5px" };
+const infoValue = { fontSize: "14px", color: "#ccc", wordBreak: "break-all" };
+
+const modalOverlay = {
+  position: "fixed",
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  background: "rgba(5, 5, 12, 0.85)",
+  backdropFilter: "blur(8px)",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  zIndex: 2000,
+  padding: "20px",
+};
+
+const modalContent = {
+  background: "linear-gradient(135deg, #121224 0%, #0d0d1a 100%)",
+  border: "1px solid rgba(255, 180, 0, 0.2)",
+  borderRadius: "16px",
+  padding: "32px 24px",
+  width: "100%",
+  maxWidth: "400px",
+  textAlign: "center",
+  boxShadow: "0 20px 50px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 180, 0, 0.05)",
+  animation: "fadeIn 0.3s ease",
+};
+
+const modalTitle = {
+  fontSize: "20px",
+  fontWeight: "700",
+  color: "#fff",
+  marginBottom: "12px",
+};
+
+const modalEmailText = {
+  fontSize: "16px",
+  color: "#FFB400",
+  fontWeight: "600",
+  marginBottom: "24px",
+  wordBreak: "break-all",
+  background: "rgba(255, 180, 0, 0.05)",
+  padding: "10px 16px",
+  borderRadius: "8px",
+  border: "1px dashed rgba(255, 180, 0, 0.2)",
+};
+
+const modalActionRow = {
+  display: "flex",
+  gap: "12px",
+  marginBottom: "20px",
+  flexWrap: "wrap",
+};
+
+const modalCopyBtn = {
+  flex: 1,
+  padding: "12px",
+  background: "rgba(255, 255, 255, 0.04)",
+  border: "1px solid rgba(255, 255, 255, 0.15)",
+  color: "#fff",
+  borderRadius: "8px",
+  fontWeight: "600",
+  fontSize: "14px",
+  cursor: "pointer",
+  transition: "all 0.2s",
+  minWidth: "140px",
+  outline: "none",
+};
+
+const modalMailBtn = {
+  flex: 1,
+  padding: "12px",
+  background: "linear-gradient(90deg, #FFB400, #FF8000)",
+  border: "none",
+  color: "#0a0a14",
+  borderRadius: "8px",
+  fontWeight: "700",
+  fontSize: "14px",
+  cursor: "pointer",
+  textDecoration: "none",
+  display: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center",
+  minWidth: "140px",
+  boxShadow: "0 4px 12px rgba(255, 180, 0, 0.2)",
+};
+
+const modalCloseBtn = {
+  background: "transparent",
+  border: "none",
+  color: "#777",
+  cursor: "pointer",
+  fontSize: "13px",
+  fontWeight: "500",
+  textDecoration: "underline",
+  marginTop: "8px",
+  outline: "none",
+};
+
+const footerStyle = {
+  textAlign: "center",
+  padding: "24px",
+  color: "#444",
+  fontSize: "13px",
+  borderTop: "1px solid rgba(255,255,255,0.05)",
+  background: "#0a0a14",
+};
+
+export default App;
