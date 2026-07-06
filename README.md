@@ -90,5 +90,15 @@ mobile/ (Expo)
 
 ---
 
+## 📸 Screenshots
+
+### Admin Login
+![Admin Login](./screenshots/admin-login.png)
+
+### Admin Dashboard — Projects Manager
+A config-driven CRUD view — every resource (Projects, Skills, Experience, Education, Certifications, Profile Photo) gets the same generic list + Edit/Delete/Add interface from a single schema.
+
+![Admin Dashboard - Projects Manager](./screenshots/admin-projects-manager.png)
+
 
 
