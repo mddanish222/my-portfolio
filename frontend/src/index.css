@@ -41,30 +41,33 @@ body {
 /* Mobile Viewport Proportions (Scales 100% Chrome mobile zoom to sleek 80% look) */
 @media (max-width: 768px) {
   html {
-    font-size: 14.5px;
+    font-size: 13px !important;
   }
   
   body {
-    font-size: 14px;
-    line-height: 1.55;
+    font-size: 13px !important;
+    line-height: 1.5 !important;
+    zoom: 0.88;
+    -moz-transform: scale(0.88);
+    -moz-transform-origin: top center;
   }
 
   h1 {
-    font-size: clamp(24px, 7.5vw, 32px) !important;
+    font-size: 26px !important;
   }
 
   h2 {
-    font-size: clamp(20px, 6vw, 26px) !important;
+    font-size: 20px !important;
   }
 
   /* Compact section paddings on mobile */
   section {
-    padding: 55px 14px !important;
+    padding: 40px 12px !important;
   }
 
   /* Compact glass cards padding */
   .glass-card {
-    padding: 16px 14px !important;
+    padding: 14px 12px !important;
     border-radius: 12px !important;
   }
 }
