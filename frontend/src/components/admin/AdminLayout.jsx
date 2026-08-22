@@ -115,13 +115,24 @@ export function AdminLayout() {
         <nav style={mobileTabStyle}>
           {Object.entries(adminConfig).map(([key, value]) => {
             const isActive = activeTab === key;
+            const shortLabel =
+              value.label === "Certifications"
+                ? "Certs"
+                : value.label === "Experience"
+                ? "Exp"
+                : value.label === "Profile Photo"
+                ? "Photo"
+                : value.label === "Resume PDF"
+                ? "Resume"
+                : value.label;
+
             return (
               <button
                 key={key}
                 onClick={() => setActiveTab(key)}
                 style={isActive ? { ...mobileTabBtn, ...activeMobileTabBtn } : mobileTabBtn}
               >
-                {value.label === "Certifications" ? "Certs" : value.label === "Experience" ? "Exp" : value.label}
+                {shortLabel}
               </button>
             );
           })}
@@ -291,31 +302,34 @@ const mobileTabStyle = {
   height: "60px",
   background: "rgba(10, 10, 20, 0.96)",
   backdropFilter: "blur(12px)",
-  borderTop: "1px solid rgba(255, 180, 0, 0.15)",
+  WebkitBackdropFilter: "blur(12px)",
+  borderTop: "1px solid rgba(255, 180, 0, 0.2)",
   display: "flex",
-  justifyContent: "space-around",
   alignItems: "center",
-  padding: "0 8px",
+  padding: "0 12px",
+  overflowX: "auto",
+  WebkitOverflowScrolling: "touch",
   zIndex: 1000,
+  gap: "8px",
 };
 
 const mobileTabBtn = {
-  background: "transparent",
-  border: "none",
-  color: "#777",
+  background: "rgba(255,255,255,0.04)",
+  border: "1px solid rgba(255,255,255,0.08)",
+  color: "#aaa",
   fontSize: "12px",
   fontWeight: "600",
-  padding: "8px 12px",
-  borderRadius: "6px",
+  padding: "7px 15px",
+  borderRadius: "20px",
   cursor: "pointer",
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  gap: "2px",
+  whiteSpace: "nowrap",
+  flexShrink: 0,
   outline: "none",
 };
 
 const activeMobileTabBtn = {
-  color: "#FFB400",
-  background: "rgba(255, 180, 0, 0.08)",
+  color: "#0a0a14",
+  background: "#FFB400",
+  borderColor: "#FFB400",
+  fontWeight: "700",
 };

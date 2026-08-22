@@ -242,7 +242,7 @@ const inputStyle = {
 
 const gridStyle = {
   display: "grid",
-  gridTemplateColumns: "1fr 1fr",
+  gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))",
   gap: "16px",
 };
 
