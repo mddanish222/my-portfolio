@@ -439,10 +439,14 @@ const globalCSS = `
     text-align: justify;
     text-justify: inter-word;
   }
+  .project-desc {
+    text-align: left;
+    word-spacing: normal;
+  }
   @media (max-width: 768px) {
-    .bio-text {
-      text-align: left;
-      word-spacing: normal;
+    .project-desc {
+      text-align: justify;
+      text-justify: inter-word;
     }
   }
 `;

@@ -143,7 +143,7 @@ function Projects() {
                 </span>
               </div>
 
-              <p style={{ ...descStyle, lineClamp: isOpen ? "none" : "3", WebkitLineClamp: isOpen ? "none" : "3" }}>
+              <p className="project-desc" style={{ ...descStyle, lineClamp: isOpen ? "none" : "3", WebkitLineClamp: isOpen ? "none" : "3" }}>
                 {project.desc}
               </p>
 
@@ -348,8 +348,6 @@ const descStyle = {
   display: "-webkit-box",
   WebkitBoxOrient: "vertical",
   overflow: "hidden",
-  textAlign: "justify",
-  textJustify: "inter-word",
 };
 
 const actionFooter = {
