@@ -436,11 +436,15 @@ const globalCSS = `
     to { opacity: 1; transform: scale(1); }
   }
   .bio-text {
+    text-align: justify;
+    text-justify: inter-word;
+  }
+  .project-desc {
     text-align: left;
     word-spacing: normal;
   }
-  @media (min-width: 769px) {
-    .bio-text {
+  @media (max-width: 768px) {
+    .project-desc {
       text-align: justify;
       text-justify: inter-word;
     }
