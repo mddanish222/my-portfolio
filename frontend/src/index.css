@@ -1,0 +1,130 @@
+/* Global Modern Design System & Dark Theme */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap');
+
+:root {
+  --bg-dark: #07070e;
+  --bg-card: rgba(18, 18, 34, 0.65);
+  --bg-card-hover: rgba(28, 28, 50, 0.85);
+  --accent-gold: #FFB400;
+  --accent-gold-glow: rgba(255, 180, 0, 0.35);
+  --accent-gold-light: #FFD166;
+  --text-main: #f0f0f5;
+  --text-muted: #9aa0a6;
+  --text-dim: #666c78;
+  --border-color: rgba(255, 255, 255, 0.08);
+  --border-glow: rgba(255, 180, 0, 0.3);
+  --font-main: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-code: 'Fira Code', monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-family: var(--font-main);
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  overflow-x: hidden;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #05050a;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 180, 0, 0.25);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 180, 0, 0.6);
+}
+
+/* Custom Keyframe Animations */
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(255, 180, 0, 0.2), inset 0 0 10px rgba(255, 180, 0, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(255, 180, 0, 0.5), inset 0 0 15px rgba(255, 180, 0, 0.25);
+  }
+}
+
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.gold-gradient-text {
+  background: linear-gradient(135deg, #FFFFFF 30%, #FFB400 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.glass-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-glow);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 180, 0, 0.1);
+}
+
+button {
+  font-family: var(--font-main);
+}
+
+/* Unified Master Skeleton Pulse Animation */
+@keyframes masterSkeletonPulse {
+  0%, 100% {
+    opacity: 0.35;
+    background: rgba(255, 255, 255, 0.05);
+  }
+  50% {
+    opacity: 0.75;
+    background: rgba(255, 180, 0, 0.12);
+  }
+}
+
+.about-skeleton,
+.skeleton-project,
+.exce-skeleton,
+.skeleton-card,
+.skeleton-box {
+  animation: masterSkeletonPulse 1.5s ease-in-out infinite !important;
+  border-radius: 8px;
+}

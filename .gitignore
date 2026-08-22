@@ -1,0 +1,17 @@
+# Environment variables (NEVER COMMIT)
+.env
+.env.local
+.env.*.local
+*.env
+
+# Dependencies
+node_modules/
+
+# Production build output
+dist/
+build/
+
+# OS / Editor junk
+.DS_Store
+Thumbs.db
+*.log
