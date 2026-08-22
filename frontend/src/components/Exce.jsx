@@ -292,8 +292,8 @@ const bulletItem = {
   fontSize: "14px",
   lineHeight: "1.7",
   marginBottom: "6px",
-  textAlign: "justify",
-  textJustify: "inter-word",
+  textAlign: "left",
+  wordSpacing: "normal",
 };
 
 
