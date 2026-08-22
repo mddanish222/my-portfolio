@@ -43,7 +43,7 @@ class ErrorBoundary extends Component {
   }
 }
 
-const ADMIN_PATH = import.meta.env.VITE_ADMIN_PATH || "/danish-admin-console-2026";
+const ADMIN_PATH = import.meta.env.VITE_ADMIN_PATH || "/danish-admin2220";
 
 // Unregister any stale service worker from previous projects on localhost
 if ('serviceWorker' in navigator) {

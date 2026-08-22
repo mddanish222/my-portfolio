@@ -21,7 +21,7 @@ export function AdminLogin() {
     try {
       const success = await login(password);
       if (success) {
-        const ADMIN_PATH = import.meta.env.VITE_ADMIN_PATH || "/danish-admin-console-2026";
+        const ADMIN_PATH = import.meta.env.VITE_ADMIN_PATH || "/danish-admin2220";
         navigate(ADMIN_PATH);
       } else {
         setError("Invalid credentials.");
