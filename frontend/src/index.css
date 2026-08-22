@@ -38,7 +38,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Mobile Viewport Proportions (Scales 100% Chrome mobile zoom to sleek 80% look) */
+/* Mobile Viewport Proportions */
 @media (max-width: 768px) {
   html {
     font-size: 13px !important;
@@ -47,17 +47,17 @@ body {
   body {
     font-size: 13px !important;
     line-height: 1.5 !important;
-    zoom: 0.88;
-    -moz-transform: scale(0.88);
+    zoom: 0.85;
+    -moz-transform: scale(0.85);
     -moz-transform-origin: top center;
   }
 
   h1 {
-    font-size: 26px !important;
+    font-size: 24px !important;
   }
 
   h2 {
-    font-size: 20px !important;
+    font-size: 19px !important;
   }
 
   /* Compact section paddings on mobile */
@@ -69,6 +69,38 @@ body {
   .glass-card {
     padding: 14px 12px !important;
     border-radius: 12px !important;
+  }
+}
+
+/* Specific Phone Scaling for 6.18cm (~360px-400px wide) screens */
+@media (max-width: 480px) {
+  html {
+    font-size: 12px !important;
+  }
+
+  body {
+    font-size: 12px !important;
+    line-height: 1.45 !important;
+    zoom: 0.80;
+    -moz-transform: scale(0.80);
+    -moz-transform-origin: top center;
+  }
+
+  h1 {
+    font-size: 22px !important;
+  }
+
+  h2 {
+    font-size: 18px !important;
+  }
+
+  section {
+    padding: 32px 10px !important;
+  }
+
+  .glass-card {
+    padding: 12px 10px !important;
+    border-radius: 10px !important;
   }
 }
 
