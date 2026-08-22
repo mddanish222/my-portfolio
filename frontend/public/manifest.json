@@ -1,0 +1,17 @@
+{
+  "short_name": "Danish Portfolio",
+  "name": "Mohammed Danish | Full Stack Developer",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#0A0A14",
+  "theme_color": "#0A0A14",
+  "display": "standalone",
+  "orientation": "portrait"
+}
