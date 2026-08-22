@@ -519,8 +519,7 @@ const heroDesc = {
   marginBottom: "36px",
   maxWidth: "560px",
   margin: "0 auto 36px",
-  textAlign: "justify",
-  textJustify: "inter-word",
+  textAlign: "center",
 };
 
 const heroButtons = {
