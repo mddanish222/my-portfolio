@@ -38,6 +38,37 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Mobile Viewport Proportions (Scales 100% Chrome mobile zoom to sleek 80% look) */
+@media (max-width: 768px) {
+  html {
+    font-size: 14.5px;
+  }
+  
+  body {
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  h1 {
+    font-size: clamp(24px, 7.5vw, 32px) !important;
+  }
+
+  h2 {
+    font-size: clamp(20px, 6vw, 26px) !important;
+  }
+
+  /* Compact section paddings on mobile */
+  section {
+    padding: 55px 14px !important;
+  }
+
+  /* Compact glass cards padding */
+  .glass-card {
+    padding: 16px 14px !important;
+    border-radius: 12px !important;
+  }
+}
+
 #root {
   width: 100%;
   min-height: 100vh;
