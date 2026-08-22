@@ -11,10 +11,17 @@
 
 <p align="center">
   <a href="https://mohammeddanish-portfolio.netlify.app"><img src="https://img.shields.io/badge/Live_Portfolio-Netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white" alt="Live Site" /></a>
+  <a href="https://portfolio-db-1jg2.onrender.com"><img src="https://img.shields.io/badge/Backend_API-Render-46E3B7?style=for-the-badge&logo=render&logoColor=white" alt="Backend API" /></a>
   <a href="https://github.com/mddanish222/my-portfolio"><img src="https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub Repo" /></a>
   <img src="https://img.shields.io/badge/Database-MongoDB_Atlas-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB Atlas" />
   <img src="https://img.shields.io/badge/Security-JWT_%2B_Rate_Limiting-FFB400?style=for-the-badge&logo=jsonwebtokens&logoColor=black" alt="Security" />
 </p>
+
+---
+
+### 🔗 Production Live Links
+- 🌐 **Live Portfolio (Netlify)**: [https://mohammeddanish-portfolio.netlify.app](https://mohammeddanish-portfolio.netlify.app)
+- ⚙️ **Backend REST API (Render)**: [https://portfolio-db-1jg2.onrender.com](https://portfolio-db-1jg2.onrender.com)
 
 ---
 
