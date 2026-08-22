@@ -436,8 +436,8 @@ const globalCSS = `
     to { opacity: 1; transform: scale(1); }
   }
   .bio-text {
-    text-align: left;
-    word-spacing: normal;
+    text-align: justify;
+    text-justify: inter-word;
   }
 `;
 
@@ -519,6 +519,8 @@ const heroDesc = {
   marginBottom: "36px",
   maxWidth: "560px",
   margin: "0 auto 36px",
+  textAlign: "justify",
+  textJustify: "inter-word",
 };
 
 const heroButtons = {

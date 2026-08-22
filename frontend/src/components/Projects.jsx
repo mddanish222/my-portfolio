@@ -348,6 +348,8 @@ const descStyle = {
   display: "-webkit-box",
   WebkitBoxOrient: "vertical",
   overflow: "hidden",
+  textAlign: "justify",
+  textJustify: "inter-word",
 };
 
 const actionFooter = {
