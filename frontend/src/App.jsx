@@ -439,6 +439,12 @@ const globalCSS = `
     text-align: justify;
     text-justify: inter-word;
   }
+  @media (max-width: 768px) {
+    .bio-text {
+      text-align: left;
+      word-spacing: normal;
+    }
+  }
 `;
 
 const appStyle = { color: "#fff", minHeight: "100vh", overflowX: "hidden" };
